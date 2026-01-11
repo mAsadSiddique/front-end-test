@@ -81,6 +81,7 @@ const sliderData = [
 
 export default function Home() {
   const [selectedCard, setSelectedCard] = useState(1);
+  const [isHovered, setIsHovered] = useState(false);
 
   const selectedCardData = sliderData.find((card) => card.id === selectedCard) || sliderData[0];
 
@@ -128,14 +129,55 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Right side - Main image */}
+          {/* Right side - Main image with curtain effect */}
           <div className="flex items-center justify-center">
-            <div className="w-[600px] h-[600px] relative">
+            <div
+              className="w-[600px] h-[600px] relative overflow-hidden"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              {/* In image - background layer */}
+              <Image
+                src={selectedCardData.inImage}
+                alt={selectedCardData.title}
+                fill
+                className="object-contain z-0"
+              />
+
+              {/* Curtain boxes - Left side */}
+              <div className="absolute inset-y-0 left-0 w-1/2 z-10 flex flex-col pointer-events-none">
+                {[...Array(10)].map((_, i) => (
+                  <div
+                    key={`left-${i}`}
+                    className="flex-1 bg-black transition-transform duration-500 ease-in-out"
+                    style={{
+                      transform: isHovered ? 'translateX(-100%)' : 'translateX(0)',
+                      transitionDelay: `${i * 30}ms`,
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Curtain boxes - Right side */}
+              <div className="absolute inset-y-0 right-0 w-1/2 z-10 flex flex-col pointer-events-none">
+                {[...Array(10)].map((_, i) => (
+                  <div
+                    key={`right-${i}`}
+                    className="flex-1 bg-black transition-transform duration-500 ease-in-out"
+                    style={{
+                      transform: isHovered ? 'translateX(100%)' : 'translateX(0)',
+                      transitionDelay: `${i * 30}ms`,
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Cover image - on top of curtains */}
               <Image
                 src={selectedCardData.coverImage}
                 alt={selectedCardData.title}
                 fill
-                className="object-contain"
+                className={`object-contain z-20 transition-opacity duration-700 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
                 priority
               />
             </div>

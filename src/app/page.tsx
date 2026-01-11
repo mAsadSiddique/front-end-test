@@ -109,7 +109,7 @@ export default function Home() {
                 src={selectedCardData.coverImage}
                 alt={selectedCardData.title}
                 fill
-                className={`object-contain z-20 transition-opacity duration-700 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
+                className={`object-contain z-20 transition-opacity duration-1500 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
                 priority
               />
             </div>
